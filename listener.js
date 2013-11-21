@@ -1,4 +1,3 @@
-
 var file = new (require('node-static').Server)('./static');
 var logger = require('./logger');
 var argv = require('optimist').argv;
@@ -7,11 +6,12 @@ var port = 8000;
 var redirect_port = 0;
 var certpath, keypath;
 
+try {
 if( process.getuid() === 0 ) {
 	port = 443;
 	redirect_port = 80;
 }
-
+} catch (e) {}
 if(typeof argv.keypath === 'undefined' || typeof argv.certpath === 'undefined') {
 	require('findit').sync(__dirname, {},  function(file, stat) {
 		if(file.indexOf('.pem') == file.length - 4) {
